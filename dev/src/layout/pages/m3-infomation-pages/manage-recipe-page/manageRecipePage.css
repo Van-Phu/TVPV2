@@ -1,0 +1,186 @@
+.container-manage-recipe {
+    width: 99%;
+    padding: 20px;
+  }
+  
+  .save-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  
+  .save-button:hover {
+    background-color: #45a049;
+  }
+
+  .content{
+    height: 750px;
+    /* background-color: rgb(255, 255, 255); */
+    border-radius: 10px;
+    padding: 20px;
+
+    padding-right: 20px;
+    display: flex;
+    gap: 30px;
+  }
+  
+  .ql-container {
+    /* overflow: auto; */
+    max-height: 650px;
+    min-height: 650px;
+    margin-bottom: 20px;
+    width: 100%;
+    /* padding-bottom: 20px; */
+
+    /* background-color: white; */
+  }
+
+  .box-content{
+    max-height: 600px;
+    overflow: auto;
+    border-bottom: 1px solid black;
+  }
+
+  .area{
+    margin-bottom: 20px;
+  }
+  
+  .input{
+    height: 20px;
+    width: 97%;
+    border-width: 1px;
+    border-color: rgb(214, 214, 214);
+    border-radius: 5px;
+    padding: 5px;
+  }
+
+  .important{
+    color: red;
+  }
+
+  .title-area{
+    font-size: 16px ;
+    margin-bottom: 5px;
+    color: black;
+    font-weight: 500;
+    /* font-weight: bold; */
+  }
+
+  .content-right{
+    width: calc(100% - 450px);
+    /* height: 100%; */
+    border-radius: 10px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background-color: white;
+    padding: 20px;
+  }
+
+  .content-left{
+    overflow: auto;
+    /* height: 100%; */
+    width: 500px;
+    border-radius: 10px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    background-color: white;
+    padding: 20px;
+
+  }
+
+
+  .recipe-form-container {
+    /* width: 400px; */
+    margin: 0 auto;
+    border-radius: 8px;
+  }
+  
+  h2 {
+    text-align: center;
+    font-size: 24px;
+    margin-bottom: 20px;
+  }
+  
+  .ingredients-container {
+    margin-bottom: 20px;
+  }
+  
+  .ingredient {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .name-recipe,
+  .quantity-input,
+  select {
+    margin-right: 10px;
+    padding: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    border-width: 1px;
+  }
+  
+  input[type='checkbox'] {
+    margin-left: 5px;
+  }
+  
+  .detailed-size {
+    display: flex;
+    align-items: center;
+  }
+  
+  .add-ingredient-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #ff7f00;
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+  }
+  
+  .add-ingredient-btn:hover {
+    background-color: #e66b00;
+  }
+
+  .remove-ingredient-btn{
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: red;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+
+  }
+
+  .name-recipe{
+    width: 200px !important;
+  }
+
+  .quantity-input{
+    width: 100px;
+  }
+  
+  .btnArea{
+    display: flex;
+    justify-content: end;
+  }
+
+  .btnSave{
+    background-color: #ff7f00;
+    color: white;
+    font-weight: bold;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .btnSave:hover {
+    background-color: #e66b00;
+  }

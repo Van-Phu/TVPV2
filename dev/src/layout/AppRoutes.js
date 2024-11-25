@@ -1,0 +1,45 @@
+// AppRoutes.js
+import React from 'react';
+import { Routes, Route } from 'react-router-dom';
+import { Home } from './pages/m1-home-pages/homepages';
+import { RecipePage } from './pages/m2-recipe-page/recipepage';
+import { InfomationPage } from './pages/m3-infomation-pages/infomation-page/infomationPage';
+import FullFunctionEditor from './pages/m3-infomation-pages/manage-recipe-page/manageRecipePage';
+import { LoginScreen } from './pages/m0-login-pages/loginpage';
+import PrivateRoute from './PrivateRoute'; // Import PrivateRoute
+
+const AppRoutes = () => {
+  return (
+    <Routes>
+      <Route path="/login" element={<LoginScreen />} />
+      
+      {/* Các route cần bảo vệ */}
+      <Route
+        path="/recipe"
+        element={
+          <PrivateRoute>
+            <RecipePage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/infomation"
+        element={
+          <PrivateRoute>
+            <InfomationPage />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/manageRecipePage"
+        element={
+          <PrivateRoute>
+            <FullFunctionEditor />
+          </PrivateRoute>
+        }
+      />
+    </Routes>
+  );
+};
+
+export default AppRoutes;

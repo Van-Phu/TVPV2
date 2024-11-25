@@ -1,0 +1,62 @@
+*{
+  list-style-type: none;
+  padding: 0;
+  margin:  0;
+  overflow: hidden;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #F67831;
+  border-radius: 10px;
+
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #ff8b48;
+}
+
+.container-app{
+  /* background-color: red; */
+  background-color: #FEE6CF;
+}
+
+.layout-app{
+  display: flex;
+}
+
+.rightContent{
+  display: block;
+  width: calc(100% - 240px);
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.titleApp{
+  height: 50px;
+  width: 100%;
+  align-items: center;
+  display: flex;
+  padding-left: 10px;
+  font-weight: bold;
+  font-size: 30px;
+}
+
+.route-area{
+
+  height: 100vh;
+  background-color: #FEE6CF !important;
+}

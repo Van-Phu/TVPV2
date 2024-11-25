@@ -1,0 +1,88 @@
+/* LoginScreen.css */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: linear-gradient(135deg, #f56200, #c882fc);
+    font-family: 'Arial', sans-serif;
+    z-index: 999;
+    position: relative;
+    /* position: absolute;
+    height: 100%;
+    width: 100%; */
+  }
+  
+  .login-box {
+    background: #ffffff;
+    padding: 40px 30px;
+    border-radius: 10px;
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.1);
+    width: 350px;
+    text-align: center;
+  }
+  
+  h2 {
+    margin-bottom: 20px;
+    color: #333;
+  }
+  
+  .input-group {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .input-label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #666;
+  }
+  
+  .input-field-login {
+    width: 90%;
+    padding: 10px 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    font-size: 14px;
+    outline: none;
+    transition: all 0.3s ease;
+    height: 20px;
+  }
+  
+  .input-field-login:focus {
+    border-color: #ff5100;
+    box-shadow: 0 0 5px rgba(109, 93, 252, 0.5);
+  }
+  
+  .login-button {
+    width: 100%;
+    padding: 10px 15px;
+    background: #ff5100;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .login-button:hover {
+    background: #ff793a;
+  }
+  
+  .login-button:active {
+    background: #ff5100;
+  }
+  
+  .login-box h2 {
+    font-weight: bold;
+    font-size: 24px;
+  }
+  
+  @media (max-width: 500px) {
+    .login-box {
+      width: 90%;
+    }
+  }
+  
