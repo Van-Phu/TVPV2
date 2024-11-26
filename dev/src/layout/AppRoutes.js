@@ -19,7 +19,7 @@ const AppRoutes = () => {
         path="/recipe"
         element={
           <PrivateRoute>
-            <RecipePage />
+            <RecipePage key="recipe"  />
           </PrivateRoute>
         }
       />
@@ -27,7 +27,7 @@ const AppRoutes = () => {
         path="/savedRecipes"
         element={
           <PrivateRoute>
-            <RecipePage typeData={2} />
+            <RecipePage key="savedRecipes"  typeData={2} />
           </PrivateRoute>
         }
       />
