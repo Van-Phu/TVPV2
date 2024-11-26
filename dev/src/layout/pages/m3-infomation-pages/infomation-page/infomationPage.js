@@ -18,14 +18,6 @@ export function InfomationPage() {
     const [isCreate, setIsCreate] = useState(false)
 
 
-    useEffect(() => {
-        const u = JSON.parse(localStorage.getItem('User')) 
-        if (u) {
-            setUserName(u.username)
-            updateField("Author", u.id)
-        }
-    }, [])
-
 
     const modules = {
         toolbar: [
@@ -62,7 +54,7 @@ export function InfomationPage() {
     const [ingredients, setIngredients] = useState([
         {
             quantity: '',
-            unit: '',
+            unit: 'gram',
             description: '',
             detailedSize: false,
         },
@@ -71,7 +63,7 @@ export function InfomationPage() {
     const handleAddIngredient = async () => {
         await setIngredients([
             ...ingredients,
-            { quantity: '', unit: '', description: '', detailedSize: false },
+            { quantity: '', unit: 'gram', description: '', detailedSize: false },
         ]);
 
     };
@@ -106,6 +98,8 @@ export function InfomationPage() {
         if (isShowCreate) {
             setIsShowCreate(false)
         } else {
+            setRecipe(new DTORecipeMaster)
+            setIngredients([{ quantity: '', unit: 'gram', description: '', detailedSize: false }])
             setIsShowCreate(true)
         }
     }
@@ -213,8 +207,13 @@ export function InfomationPage() {
     };
 
     const handleUpdate = (item) => {
+        
         APIUpdateRecipe(item)
-        setIngredients(item.ingredients)
+        // setIngredients(item.ingredients)
+    }
+
+    const handleCheckItem = () => {
+
     }
 
     
@@ -229,15 +228,20 @@ export function InfomationPage() {
 
     const handleButtonUpdateClick = (item) => {
         setRecipe(item)
-        console.log(item)
         setIsShowCreate(true)
         setIsCreate(false)
+        setIngredients(item.Ingredients)
         
+    }
+
+    const handleClearImage = () =>{
+        setImageUrl(null)
+        updateField('Thumbnail', '')
     }
 
     useEffect(() => {
         if (userName) {
-            APIGetListRecipe(userName)
+
         }
 
     }, [userName])
@@ -253,6 +257,18 @@ export function InfomationPage() {
     useEffect(() => {
         setImageUrl(recipe.Thumbnail);
     }, [recipe.Thumbnail])
+
+    
+    useEffect(() => {
+        const u = JSON.parse(localStorage.getItem('User')) 
+        if (u) {
+            setUserName(u.username)
+            updateField("Author", u.id)
+            console.log(u.id)
+            APIGetListRecipe(u.id)
+        }
+    }, [])
+
 
     return (
         <div>
@@ -317,17 +333,25 @@ export function InfomationPage() {
                                     {/* Input để nhập URL ảnh */}
                                     <div className="title-area">Ảnh Thumbnail <span className="important">(*)</span></div>
                                     <input
+                                        disabled={imageUrl}
                                         type="text"
                                         placeholder="Nhập URL ảnh"
-                                        value={recipe?.Thumbnail}
+                                        value={recipe.Thumbnail}
                                         onChange={handleUrlChange}
                                         className="input"
                                     />
+                                 
 
                                     <br /><br />
 
                                     {/* Hiển thị ảnh từ URL nếu có */}
-                                    {imageUrl && <img src={imageUrl} alt="Selected Preview" style={{ maxWidth: '300px' }} />}
+                                    {imageUrl && 
+                                    <div className='thumbnail-area'>
+                                           <div onClick={() => handleClearImage()} className='button-delete-image'>x</div>
+                                           <img className='thumbnail-image' src={imageUrl} alt="Selected Preview" />
+
+                                    </div>}
+                                    
                                 </div>
 
                                 <div className="area">
@@ -372,13 +396,14 @@ export function InfomationPage() {
                                                         }
                                                     />
                                                     <select
-                                                        value={ingredient.unit}
+                                                        value={ingredient.unit || "gram"}
                                                         onChange={(e) => handleChange(index, 'unit', e.target.value)}
                                                     >
-                                                        <option value="gram">Gram</option>
-                                                        <option value="can">Trái</option>
-                                                        <option value="oz">Kí</option>
+                                                        <option value="gram">gram</option>
+                                                        <option value="can">trái</option>
+                                                        <option value="oz">kí</option>
                                                     </select>
+
 
                                                     <button
                                                         className="remove-ingredient-btn"
@@ -419,6 +444,10 @@ export function InfomationPage() {
                         </div>
                     </div>
                 </div>}
+
+                <div className='dialog-delete'>
+
+                </div>
 
 
             </div>
