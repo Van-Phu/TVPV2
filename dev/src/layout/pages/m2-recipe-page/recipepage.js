@@ -68,44 +68,45 @@ export function RecipePage({typeData}) {
 
 
 
-    function handleFilterChange(value, fields) {
-        setSearchValue(value)
-        const normalizedValue = value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        if(!normalizedValue){
-            setFilteredData(listRecipe)
-            return
+    function handleFilterChange() {
+        let data = listRecipe;
+
+        const normalizedValue = searchValue.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        if(normalizedValue){
+            data = listRecipe.filter(item => {
+                return ['RecipeName', 'Author'].some(field => {
+                    const fieldValue = item[field];
+                    if (typeof fieldValue === 'string') {
+                        const normalizedFieldValue = fieldValue.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                        return normalizedFieldValue.includes(normalizedValue);
+                    }
+                    return false;
+                });
+            });
+            console.log('yes')
         }
 
-        const filtered = filteredData.filter(item => {
-            return fields.some(field => {
-                const fieldValue = item[field];
-                if (typeof fieldValue === 'string') {
-                    // Compare field value to search input (case-insensitive)
-                    const normalizedFieldValue = fieldValue.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-                    return normalizedFieldValue.includes(normalizedValue);
-                }
-                return false; // If the field is not a string, don't include it in filtering
-            });
-        });
+        if(currentType){
+            data = data.filter((item) => 
+                item.Category.some(category => category.name == currentType.name)
+            );
+        }
 
-        
-        setFilteredData(filtered); // Update filtered data
+        // console.log('yes')
+        setFilteredData(data)
     }
 
     const handleFilterType = (itemData) => {
-    setSearchValue('')
         if(currentType?.name == itemData.name){
             setCurrentType(null)
-            setFilteredData(listRecipe)
             return
         }
         setCurrentType(itemData)
-        const data = listRecipe.filter((item) => 
-            item.Category.some(category => category.name == itemData.name)
-        );
-
-        setFilteredData(data)
     }
+
+    useEffect(() =>{
+        handleFilterChange();
+    }, [currentType, searchValue])
     
 
     useEffect(() => {
@@ -128,7 +129,7 @@ export function RecipePage({typeData}) {
                                 e.target.focus();
                             }
                         }} 
-                        onChange={(e) => handleFilterChange(e.target.value, ['RecipeName', 'Author'])} />
+                        onChange={(e) => setSearchValue(e.target.value)} />
                         <FontAwesomeIcon icon={faMagnifyingGlass} />
                     </div>
                 </div>

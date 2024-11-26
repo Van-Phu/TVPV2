@@ -49,7 +49,7 @@ export function RecipeList({data}) {
                         <span className="recipe-author" title={item.Author?.username}>Người đăng: {item.Author?.username}</span>
                         <div className="save-block">
                             <span className="num-of-saved">{item.NumOfSaved} người đã lưu</span>
-                            <span className={`save-icon ${item.IsSaved ? 'isSaved' : ''}`} onClick={() => handleSaveClick(item)}><FontAwesomeIcon icon={item.IsSaved ? solidBookmark : regularBookmark} /></span>
+                            <span style={{display:'none'}} className={`save-icon ${item.IsSaved ? 'isSaved' : ''}`} onClick={() => handleSaveClick(item)}><FontAwesomeIcon icon={item.IsSaved ? solidBookmark : regularBookmark} /></span>
                         </div>
                     </div>
                 </div>
