@@ -19,6 +19,9 @@
 
 .recipe-detail .recipe-content-container{
     overflow: visible;
+    background-color: white;
+    padding: 10px;
+    border-radius: 10px;
 }
 
 .recipe-detail .recipe-content-title{
@@ -55,6 +58,8 @@
     display: flex;
     flex-direction: column;
     gap: 10px;
+    background-color: white;
+    padding: 10px;
 }
 
 .recipe-detail .recipe-comment-title{
@@ -63,12 +68,13 @@
 }
 
 .recipe-detail .recipe-comments{
+    padding: 10px;
     display: flex;
     flex-direction: column;
     gap: 20px;
     max-height: 700px;
     padding: 30px;
-    background-color: rgba(253, 215, 158, 0.767);
+    background-color: white;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     border-radius: 10px;
 }
@@ -235,6 +241,8 @@
     width: 25%;
     height: 600px;
     border-radius: 10px;
+    background-color: white;
+    padding: 10px;
     
 }
 
@@ -243,7 +251,7 @@
     flex-direction: column;
     gap: 10px;
     padding: 20px;
-    background-color: rgba(253, 215, 158, 0.3);   
+    /* background-color: rgba(253, 215, 158, 0.3);    */
     box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
     border-radius: 10px;
 
