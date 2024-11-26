@@ -40,7 +40,7 @@ function App() {
               <Navbar />
             </div>
             <div className="rightContent">
-              <div className="titleApp">This is title</div>
+              <div className="titleApp"></div>
               <div className="route-area">
                 <AppRoutes />
               </div>

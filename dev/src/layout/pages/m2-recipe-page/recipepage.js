@@ -9,23 +9,17 @@ export function RecipePage() {
     const [gridData, setGridData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
     const [currentType, setCurrentType] = useState()
+    const [searchValue, setSearchValue] = useState('')
 
     const foodTypes = [
         { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món khai vị" },
-        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món chính" },
-        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món tráng miệng" },
-        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món ăn nhẹ" },
-        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món ăn chay" },
-        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món nướng" },
-        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món hấp" },
-        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món chiên" },
-        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món luộc" },
-        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món xào" },
-        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món canh" },
-        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món lẩu" },
-        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món súp" },
-        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món nước" },
-        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món chay" }
+        { image: 'https://nauco29.com/files/thumb/767/450//uploads/content/th%E1%BB%8Fquay.jpg', name: "Món chính" },
+        { image: 'https://suckhoedoisong.qltns.mediacdn.vn/zoom/600_315/Images/phamhiep/2016/08/09/4-ly-do-tot-de-nen-an-mon-trang-mieng-moi-ngay1470699093.jpg', name: "Món tráng miệng" },
+        { image: 'https://img.tastykitchen.vn/resize/764x-/2020/09/16/the-nao-la-an-vat-lanh-manh-85d8.jpg', name: "Món ăn nhẹ" },
+        { image: 'https://abbaka.com.vn/wp-content/uploads/2022/05/goi-y-6-mon-an-chay-don-gian-cho-bua-com-gia-dinh.jpg', name: "Món ăn chay" },
+        { image: 'https://travelgear.vn/blog/wp-content/uploads/2019/11/tong-hop-cach-lam-thit-nuong-bbq-thom-ngon-dung-vi-2.jpg', name: "Món nướng" },
+        { image: 'https://suckhoedoisong.qltns.mediacdn.vn/324455921873985536/2022/8/20/hap-16610120518542050491644.png', name: "Món hấp" },
+        { image: 'https://cdn.tgdd.vn/2021/08/CookRecipe/Avatar/nem-hai-san-chien-xu-thumbnail.jpg', name: "Món chiên" },
       ];
 
 
@@ -52,6 +46,7 @@ export function RecipePage() {
 
 
     function handleFilterChange(value, fields) {
+        setSearchValue(value)
         const normalizedValue = value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         if(!normalizedValue){
             setFilteredData(listRecipe)
@@ -70,10 +65,12 @@ export function RecipePage() {
             });
         });
 
+        
         setFilteredData(filtered); // Update filtered data
     }
 
     const handleFilterType = (itemData) => {
+    setSearchValue('')
         if(currentType?.name == itemData.name){
             setCurrentType(null)
             setFilteredData(listRecipe)
@@ -104,13 +101,14 @@ export function RecipePage() {
                 <div className="searchArea">
                     <div className="search">
                         <input className='inputSearch' placeholder="Tìm kiếm theo công thức theo món ăn yêu thích" 
+                        value={searchValue}
                         onKeyDown={(e) => {
                             if (e.key === 'Enter') {
                                 e.target.blur();
                                 e.target.focus();
                             }
                         }} 
-                        onBlur={(e) => handleFilterChange(e.target.value, ['RecipeName', 'Author'])} />
+                        onChange={(e) => handleFilterChange(e.target.value, ['RecipeName', 'Author'])} />
                         <FontAwesomeIcon icon={faMagnifyingGlass} />
                     </div>
                 </div>
