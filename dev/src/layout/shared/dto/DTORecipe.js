@@ -3,7 +3,7 @@ export class DTORecipeMaster {
     Code = 0,
     RecipeName = "",
     RecipeDescription = "",
-    Category = [""],
+    Category = null,
     IsSaved = false,
     NumOfSaved = 0,
     Author = null, // ObjectId của User

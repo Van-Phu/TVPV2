@@ -30,13 +30,6 @@ export function InfomationPage() {
         { name: "Món nướng" },
         { name: "Món hấp" },
         { name: "Món chiên" },
-        { name: "Món luộc" },
-        { name: "Món xào" },
-        { name: "Món canh" },
-        { name: "Món lẩu" },
-        { name: "Món súp" },
-        { name: "Món nước" },
-        { name: "Món chay" }
       ];
       
 
@@ -368,7 +361,7 @@ export function InfomationPage() {
                         <div onClick={() => handleChangeCreate()} className='btn-add-area'>
                             <div className='btn-add-new-post'>
                                 <i class="fa-solid fa-plus"></i>
-                                Thêm mới
+                                THÊM MỚI
                             </div>
 
                         </div>
@@ -450,7 +443,7 @@ export function InfomationPage() {
                                 </div>
                                 <div className="area">
                                     <div className="title-area">Mô tả <span className="important">(*)</span></div>
-                                    <input value={recipe?.RecipeDescription} onChange={(value) => updateField('RecipeDescription', value.target.value)} className="input" />
+                                    <textarea value={recipe?.RecipeDescription} onChange={(value) => updateField('RecipeDescription', value.target.value)} className="input text-area" />
                                 </div>
                                 <div className="area">
                                     <div className="title-area">Loại món ăn <span className="important">(*)</span></div>
