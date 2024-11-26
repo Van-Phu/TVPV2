@@ -123,6 +123,34 @@
     object-fit: contain;
 }
 
+.button-delete-image{
+    height: 30px;
+    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: red;
+    border-radius: 5px;
+    color: white;
+    font-weight: bold;
+    position: absolute;
+    z-index: 999;
+    cursor: pointer;
+    margin-left: 405px;
+    margin-top: 10px;
+    /* margin-bottom: -50px; */
+}
+
+.thumbnail-image{
+   
+    width: 100%;
+    min-width: 100%;
+}
+
+.thumbnail-area{
+    position: relative !important;
+}
+
 .name-card{
     font-size: 20px;
     font-weight: 500;
@@ -181,5 +209,13 @@
 
   .ql-toolbar.ql-snow + .ql-container.ql-snow {
     height: 550px;
+  }
+
+  .dialog-delete{
+    height: 500px;
+    width: 500px;
+    background-color: red;
+    position: absolute;
+    z-index: 99;
   }
 
