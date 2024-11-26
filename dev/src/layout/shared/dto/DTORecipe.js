@@ -15,6 +15,9 @@ export class DTORecipeMaster {
     servings = 0,
     createdAt = null,
     updatedAt = null,
+    numOfPost = 0,
+    popularRecipes = [],
+
   } = {}) {
     this.Code = Code;
     this.RecipeName = RecipeName;
@@ -31,5 +34,7 @@ export class DTORecipeMaster {
     this.servings = servings;
     this.createdAt = createdAt;
     this.updatedAt = updatedAt;
+    this.numOfPost = numOfPost;
+    this.popularRecipes = popularRecipes;
   }
 }
