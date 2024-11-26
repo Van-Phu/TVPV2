@@ -3,7 +3,7 @@ import { faHouse, faBook, faBox, faAddressBook, faMagnifyingGlass, faCirclePlus,
 import './recipepage.css'
 import { RecipeList } from '../../shared/component/C-RecipeList/RecipeList'
 import { useEffect, useState } from 'react';
-export function RecipePage() {
+export function RecipePage({typeData}) {
 
     const [listRecipe, setListRecipe] = useState([])
     const [gridData, setGridData] = useState([]);
@@ -90,8 +90,6 @@ export function RecipePage() {
 
     useEffect(() => {
         APIGetListRecipe()
-
-
     }, []);
 
     useEffect(() => {

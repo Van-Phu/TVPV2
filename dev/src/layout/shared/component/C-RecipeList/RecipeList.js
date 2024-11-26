@@ -32,11 +32,6 @@ export function RecipeList({data}) {
     }, [data]);
 
 
-    // if (isLoading) {
-    //     console.log(isLoading)
-    //     return <div style={{ textAlign: 'center', fontSize: '20px' }}>Loading...</div>; // Loading indicator
-    // }
-
     if(recipes.length == 0 && !isLoading){
         return <div style={{width: '100%', height:'500px', display: 'flex', justifyContent:'center', alignItems:'center', fontSize:'20px'}}>"Danh sách trống"</div>
     }

@@ -8,7 +8,7 @@ import { faArrowUp, faBookmark as solidBookmark } from '@fortawesome/free-solid-
 import { faBookmark as regularBookmark } from '@fortawesome/free-regular-svg-icons';
 
 export function RecipeDetail() {
-    const [currentUserID, setCurrentUserID] = useState('');
+    const [currentUserID, setCurrentUserID] = useState({});
     const [recipe, setRecipe] = useState(new DTORecipeMaster);
     const [comments, setComments] = useState([]);
     const [recipeComment, setRecipeComment] = useState(new DTORecipeComment);
@@ -18,7 +18,7 @@ export function RecipeDetail() {
 
     
     useEffect(() => {
-            
+        onComponentLoad();
     }, [])
 
     useEffect(() => {
@@ -27,23 +27,42 @@ export function RecipeDetail() {
         }
       }, [isEditComment]); 
 
-    function onComponentLoad(){
+
+    async function onComponentLoad(){
+        updateField('_id', null)
+        updateField('Descriptions', "")
+
+        setIsEditComment(false);
+        togglePopup(null);
+
+        await handleGetCacheUser();
+        await handleGetRecipe();
+        
+    }
+
+    const handleGetCacheUser = async() =>{
         const u = JSON.parse(localStorage.getItem('User')) 
-        const r =  JSON.parse(localStorage.getItem('Recipe')) 
+        
         if (u) {
             setCurrentUserID(u);
             updateField("User", u.id)
             updateField("ImageThumb", u.imagethumb)
 
         }
-        updateField("Recipe", r._id)
-
-        APIGetRecipe(r._id)
-        APIGetComments(r._id)
     }
 
-    const APIAddComment= async () => {
+    const handleGetRecipe = async() =>{
+        const r =  JSON.parse(localStorage.getItem('DTORecipe')) 
+        const u = JSON.parse(localStorage.getItem('User')) 
+        const id = {idUser: u.id, idRep: r._id}
+        updateField("Recipe", r?._id)
+        APIGetRecipe(id)
+        APIGetComments(r?._id)
+    }
+
+    const APIAddComment = async () => {
         try {
+
             const response = await fetch('http://localhost:5000/api/comments/addComment', {
                 method: 'POST',
                 headers: {
@@ -69,15 +88,18 @@ export function RecipeDetail() {
 
     const APIGetRecipe = async (id) => {
         try {
-            const response = await fetch('http://localhost:5000/api/recipes/getRecipeById/' + id, {
-                method: 'GET',
+            const response = await fetch('http://localhost:5000/api/recipes/getRecipeById', {
+                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
-                }
+                },
+                body:JSON.stringify({
+                    recipe: id.idRep,
+                    user: id.idUser
+                })
             });
 
             const data = await response.json();
-            console.log(data)
 
             if (response.ok) {
                 setRecipe(data)
@@ -105,7 +127,6 @@ export function RecipeDetail() {
 
             if (response.ok) {
                 setComments(data)
-               console.log(comments)
             } 
             
         } catch (error) {
@@ -124,8 +145,12 @@ export function RecipeDetail() {
                 body: JSON.stringify(recipeComment),
             });
 
+            
+
             const data = await response.json();
 
+            updateField('Descriptions', '')
+            updateField('_id', null)
             if (response.ok) {
                 alert('Cập nhật bình luận thành công!')
                 APIGetComments(recipe._id)
@@ -134,12 +159,12 @@ export function RecipeDetail() {
                 alert(`Lỗi: ${data.message}`);
             }
             
-            updateField('Descriptions', '')
             setIsEditComment(false);
             togglePopup(null);
+
         } catch (error) {
             console.error('Lỗi kết nối:', error);
-            alert('Lỗi hệ thống!');
+            alert('Lỗi hệ thống!');      
         }
     };
 
@@ -166,6 +191,62 @@ export function RecipeDetail() {
         }
     };
 
+    const APISaveRecipe = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/api/recipes/saveRecipe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    Recipe: recipe,
+                    User: currentUserID
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert("Lưu thành công!")
+                const id = {idUser: currentUserID.id, idRep: recipe._id}
+                APIGetRecipe(id)
+            } else {
+                alert(`Lỗi: ${data.message}`);
+            }
+        } catch (error) {
+            console.error('Lỗi kết nối:', error);
+            alert('Lỗi hệ thống!');
+        }
+    };
+
+    const APIUnSaveRecipe = async () => {
+        try {
+            const response = await fetch('http://localhost:5000/api/recipes/unSaveRecipe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    Recipe: recipe,
+                    User: currentUserID
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert("Huỷ lưu thành công!")
+                const id = {idUser: currentUserID.id, idRep: recipe._id}
+                APIGetRecipe(id)
+            } else {
+                alert(`Lỗi: ${data.message}`);
+            }
+        } catch (error) {
+            console.error('Lỗi kết nối:', error);
+            alert('Lỗi hệ thống!');
+        }
+    };
+
     function formatDate(dateString) {
         const date = new Date(dateString);
         return date.toLocaleString("vi-VN", {
@@ -178,21 +259,16 @@ export function RecipeDetail() {
         });
     }
 
-    function handleAddComment(item){
+    function handleAddComment(){
         if(isEditComment){
-            handleUpdateComment(item)
+            APIUpdateComment()
         }else{
             APIAddComment()
         }
     }
 
-    function handleUpdateComment(comment){
-        if(comment.User._id == currentUserID.id._id){
-            APIUpdateComment()
-        }
-    }
-
     function handleDeleteComment(comment){
+        
         if(comment.User._id == currentUserID.id || recipe.Author == currentUserID.id){
             APIDeleteComment(comment._id)
         }
@@ -211,15 +287,24 @@ export function RecipeDetail() {
       };
 
     const toggleEdit = (item) => {
-        updateField('_id',item._id)
-        updateField('Descriptions', item.Descriptions)
+        updateField('_id',item?._id)
+        updateField('Descriptions', item?.Descriptions)
+        if(item)
         setIsEditComment(true);
     };
 
     const handleNavigateRecipe = (recipeID) => {
-        localStorage.setItem('Recipe', {_id: recipeID})
+        localStorage.setItem('DTORecipe', JSON.stringify({_id: recipeID}))
         onComponentLoad();
     }
+
+    const handleSaveRecipe = () =>{
+        if(recipe?.isSaved != null)
+            APIUnSaveRecipe()
+        else 
+            APISaveRecipe()
+    }
+
 
     return (
         <div className="recipe-detail">
@@ -295,6 +380,10 @@ export function RecipeDetail() {
                         ))}
                     </div>
 
+                </div>  
+                <div className='function-buttons'>
+                    <div className='button' onClick={() => handleSaveRecipe()}>{recipe?.isSaved != null ? "Huỷ lưu" : "Lưu công thức"}</div>
+                    <div className='button'>Quay lại</div>
                 </div>               
             </div>
         </div>
