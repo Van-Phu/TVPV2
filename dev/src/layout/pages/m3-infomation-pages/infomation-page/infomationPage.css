@@ -1,5 +1,5 @@
 .container-infomation-page{
-    height: 100vh;
+    height: 100%;
     width: 100%;
     overflow: hidden;
     position: relative !important;
@@ -172,5 +172,14 @@
     height: 40px;
     border-radius: 10px;
 
+  }
+
+  .ql-container{
+    max-height: 650px;
+    overflow: hidden;
+  }
+
+  .ql-toolbar.ql-snow + .ql-container.ql-snow {
+    height: 550px;
   }
 

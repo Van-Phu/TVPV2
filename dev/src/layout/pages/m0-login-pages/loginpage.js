@@ -29,7 +29,7 @@ export function LoginScreen() {
       }
 
       const data = await response.json();
-      localStorage.setItem("User", data.data.username);
+      localStorage.setItem("User", JSON.stringify(data.data) );
       dispatch(login(data.data.username))
       navigate("/recipe");
     } catch (error) {

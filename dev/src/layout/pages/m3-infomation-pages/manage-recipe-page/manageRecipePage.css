@@ -29,9 +29,10 @@
   
   .ql-container {
     /* overflow: auto; */
-    max-height: 650px;
-    min-height: 650px;
+    /* max-height: 650px;
+    min-height: 650px; */
     margin-bottom: 20px;
+    overflow: hidden;
     width: 100%;
     /* padding-bottom: 20px; */
 
@@ -40,7 +41,7 @@
 
   .box-content{
     max-height: 600px;
-    overflow: auto;
+    overflow: hidden;
     border-bottom: 1px solid black;
   }
 
