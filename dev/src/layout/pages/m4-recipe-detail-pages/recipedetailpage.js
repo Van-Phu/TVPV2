@@ -54,7 +54,7 @@ export function RecipeDetail() {
     const handleGetRecipe = async() =>{
         const r =  JSON.parse(localStorage.getItem('DTORecipe')) 
         const u = JSON.parse(localStorage.getItem('User')) 
-        const id = {idUser: u.id, idRep: r._id}
+        const id = {idUser: u?.id, idRep: r?._id}
         updateField("Recipe", r?._id)
         APIGetRecipe(id)
         APIGetComments(r?._id)
