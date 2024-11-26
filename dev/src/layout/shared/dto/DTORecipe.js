@@ -1,17 +1,35 @@
 export class DTORecipeMaster {
-    constructor() {
-      this.Code = 0;
-      this.RecipeName = "";
-      this.RecipeDescription = "";
-      this.Category = [""];
-      this.IsSaved = false;
-      this.NumOfSaved = 0;
-      this.Author = "";
-      this.Ingredients = [];
-      this.PreparationTime = 0;
-      this.CookingTime = 0;
-      this.Thumnail = "";
-      this.template = "";
-      this.servings = 0
-    }
+  constructor({
+    Code = 0,
+    RecipeName = "",
+    RecipeDescription = "",
+    Category = [""],
+    IsSaved = false,
+    NumOfSaved = 0,
+    Author = null, // ObjectId của User
+    Ingredients = [],
+    PreparationTime = 0,
+    CookingTime = 0,
+    Thumbnail = "",
+    template = "",
+    servings = 0,
+    createdAt = null,
+    updatedAt = null,
+  } = {}) {
+    this.Code = Code;
+    this.RecipeName = RecipeName;
+    this.RecipeDescription = RecipeDescription;
+    this.Category = Category;
+    this.IsSaved = IsSaved;
+    this.NumOfSaved = NumOfSaved;
+    this.Author = Author;
+    this.Ingredients = Ingredients;
+    this.PreparationTime = PreparationTime;
+    this.CookingTime = CookingTime;
+    this.Thumbnail = Thumbnail;
+    this.template = template;
+    this.servings = servings;
+    this.createdAt = createdAt;
+    this.updatedAt = updatedAt;
   }
+}
