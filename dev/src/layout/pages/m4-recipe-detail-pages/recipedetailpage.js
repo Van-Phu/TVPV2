@@ -1,18 +1,22 @@
 import { useEffect, useState } from 'react';
 import './recipedetailpage.css'
 import { DTORecipeMaster } from '../../shared/dto/DTORecipe';
+import { Button } from '@mui/material';
+import { DTORecipeComment } from '../../shared/dto/DTORecipeComment';
 
 export function RecipeDetail() {
     const [recipe, setRecipe] = useState(new DTORecipeMaster);
     const [comments, setComments] = useState([]);
+    const [recipeComment, setRecipeComment] = useState(new DTORecipeComment);
     
     useEffect(() => {
             APIGetRecipe("674573f86fe971097a9280d8")
+            APIGetComments("674573f86fe971097a9280d8")
     }, [])
 
     const APIAddComment= async (e) => {
         try {
-            const response = await fetch('http://localhost:5000/api/recipes/createRecipe', {
+            const response = await fetch('http://localhost:5000/api/comment/addComment', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -58,6 +62,29 @@ export function RecipeDetail() {
         }
     };
     
+    const APIGetComments = async (id) => {
+        try {
+            const response = await fetch('http://localhost:5000/api/comment/getAllComments/' + id, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            const data = await response.json();
+            console.log(data)
+
+            if (response.ok) {
+                setComments(data)
+            } 
+            // else {
+            //     alert(`Lỗi: ${data.message}`);
+            // }
+        } catch (error) {
+            console.error('Lỗi kết nối:', error);
+            alert('Lỗi hệ thống!');
+        }
+    };
 
     const APIDeleteComment = async (id) => {
         try {
@@ -93,10 +120,21 @@ export function RecipeDetail() {
           minute: "2-digit",
           second: "2-digit",
         });
-      }
+    }
 
-    
-    
+    function handleAddComment(){
+        updateField("Recipe", "674573f86fe971097a9280d8")
+        updateField("User", )
+        updateField("Recipe", "674573f86fe971097a9280d8")
+    }
+
+    const updateField = (fieldName, value) => {
+        setRecipeComment((prev) => ({
+            ...prev,
+            [fieldName]: value,
+        }));
+    };
+
     return (
         <div className="recipe-detail">
             <div className="recipe-content">
@@ -120,25 +158,32 @@ export function RecipeDetail() {
                 </div>
 
                 <div className='recipe-comment-container'>
-                    <div>Bình luận</div>
+                    <div className='recipe-comment-title'>Bình luận</div>
                     <div className='recipe-comments'>
-                        
-                        <div className='comment-img-container'>
-                            <img src='https://tourdargent.jp/fileadmin/sites/tourdargent/about-us/chef/01.jpg' className='comment-img'/>
-                            <div className='comment-description'>
-                                <div>Lương Văn Phú</div>
-                                <div>Phải thú thật công thức này nấu ăn rất ngon</div>
-                            </div>
-                            <div className='more-action'>
-                                <span>...</span>
-                                <div className='more-action-popup'>
-                                    <span className='action'>Chỉnh sửa</span>
-                                    <span className='action'>Xoá</span>
+                        <div className='comment-containers'>
+                            <div className='comment-img-container'>
+                                <img src='https://tourdargent.jp/fileadmin/sites/tourdargent/about-us/chef/01.jpg' className='comment-img'/>
+                                <div className='comment-description'>
+                                    <div>Lương Văn Phú</div>
+                                    <div>Phải thú thật công thức này nấu ăn rất ngon</div>
+                                </div>
+                                <div className='more-action'>
+                                    <span>...</span>
+                                    <div className='more-action-popup'>
+                                        <span className='action'>Chỉnh sửa</span>
+                                        <span className='action'>Xoá</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-               
-                </div>
+                        
+                        <div className='input-comment-container'>
+                            <img src='https://tourdargent.jp/fileadmin/sites/tourdargent/about-us/chef/01.jpg' className='input-comment-img'/>
+                            <textarea className='comment-input' placeholder='Thêm bình luận' onChange={(e) => updateField("Descriptions", e.target.value)}/>
+                            <button>đăng</button>
+                        </div>
+                    </div>
+                    
                 </div>       
             </div>
             <div className="recipe-author">
