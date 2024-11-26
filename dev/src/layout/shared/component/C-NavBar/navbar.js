@@ -10,7 +10,7 @@ import { logout } from '../../../../store/slices/userSlice';
 export function Navbar() {
     const listModule = [
         { id: 0, text: 'CÔNG THỨC', icon: faBook, routeLink: '/recipe' },
-        { id: 1, text: 'ĐÃ LƯU', icon: faBox, routeLink: '/comunicate'  },
+        { id: 1, text: 'ĐÃ LƯU', icon: faBox, routeLink: '/savedRecipes'  },
         { id: 2, text: 'TRANG CÁ NHÂN', icon: faAddressBook, routeLink: '/infomation'  },
         { id: 3, text: 'Module 1', icon: faAddressBook,  routeLink: '/manageRecipePage' },
         { id: 4, text: 'Module 1', icon: faAddressBook },

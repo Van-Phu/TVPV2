@@ -24,7 +24,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/savedRecipe"
+        path="/savedRecipes"
         element={
           <PrivateRoute>
             <RecipePage typeData={2} />

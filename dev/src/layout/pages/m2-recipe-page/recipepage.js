@@ -43,6 +43,27 @@ export function RecipePage({typeData}) {
         }
     };
 
+    const APIGetListSavedRecipe = async () => {
+        try {
+            const user = localStorage.getItem('User');
+            const response = await fetch('http://localhost:5000/api/recipes/getSavedRecipes/' + user.id, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                setListRecipe(data)
+                setFilteredData(data);
+            } 
+        } catch (error) {
+            console.error('Lỗi kết nối:', error);
+            alert('Lỗi hệ thống!');
+        }
+    };
+
 
 
     function handleFilterChange(value, fields) {
@@ -86,12 +107,11 @@ export function RecipePage({typeData}) {
     
 
     useEffect(() => {
-        APIGetListRecipe()
-    }, []);
-
-    useEffect(() => {
- 
-    })
+        if(typeData == null)
+            APIGetListRecipe()
+        else
+            APIGetListSavedRecipe()
+    }, [typeData]);
 
     return (
         <div className='recipeContainer'>
