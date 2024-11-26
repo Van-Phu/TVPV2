@@ -1,26 +1,64 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faHouse, faBook, faBox, faAddressBook, faMagnifyingGlass, faCirclePlus } from '@fortawesome/free-solid-svg-icons'
+import { faHouse, faBook, faBox, faAddressBook, faMagnifyingGlass, faCirclePlus, faCheck } from '@fortawesome/free-solid-svg-icons'
 import './recipepage.css'
 import { RecipeList } from '../../shared/component/C-RecipeList/RecipeList'
 import { useEffect, useState } from 'react';
 export function RecipePage() {
 
-    const listTest = [
-        { Code: 1, RecipeName: "Bún Real", RecipeDescription: "Món ăn đơn giản các bạn nên giản các bạn nên giản các bạn nên nấu để ăn vào ngày mưa", Category: ["monnuoc"], IsSaved: true, NumOfSaved: 50, Author: "Heo con nấu ăn" },
-        { Code: 2, RecipeName: "Mì quảng Real", RecipeDescription: "Test for test for test for", Category: ["monnuoc"], IsSaved: false, NumOfSaved: 10, Author: "Mèo con nấu ăn" },
-        { Code: 3, RecipeName: "Bún bò Real", RecipeDescription: "Test for test for test for", Category: ["monnuoc"], IsSaved: false, NumOfSaved: 20, Author: "Heo con nấu ăn" },
-        { Code: 4, RecipeName: "Hủ tiếu Real", RecipeDescription: "Test for test for test for", Category: ["monnuoc"], IsSaved: true, NumOfSaved: 80, Author: "Chó con nấu ăn" },
-        { Code: 5, RecipeName: "Phở bò Real", RecipeDescription: "Test for test for test for", Category: ["monnuoc"], IsSaved: true, NumOfSaved: 80, Author: "Heo con nấu ăn" },
-        { Code: 6, RecipeName: "Bún chả Real", RecipeDescription: "Test for test for test for", Category: ["monnuoc"], IsSaved: true, NumOfSaved: 80, Author: "Lợn con nấu ăn" }
-    ];
+    const [listRecipe, setListRecipe] = useState([])
     const [gridData, setGridData] = useState([]);
     const [filteredData, setFilteredData] = useState([]);
+    const [currentType, setCurrentType] = useState()
+
+    const foodTypes = [
+        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món khai vị" },
+        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món chính" },
+        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món tráng miệng" },
+        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món ăn nhẹ" },
+        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món ăn chay" },
+        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món nướng" },
+        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món hấp" },
+        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món chiên" },
+        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món luộc" },
+        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món xào" },
+        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món canh" },
+        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món lẩu" },
+        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món súp" },
+        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món nước" },
+        { image: 'https://haithuycatering.com/image/5c3c01d751046d196319f41c/original.jpg', name: "Món chay" }
+      ];
+
+
+    const APIGetListRecipe = async (user) => {
+        try {
+            const response = await fetch('http://localhost:5000/api/recipes/getAllRecipes', {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                }
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                setListRecipe(data)
+                setFilteredData(data);
+            } 
+        } catch (error) {
+            console.error('Lỗi kết nối:', error);
+            alert('Lỗi hệ thống!');
+        }
+    };
+
+
 
     function handleFilterChange(value, fields) {
         const normalizedValue = value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        if(!normalizedValue){
+            setFilteredData(listRecipe)
+            return
+        }
 
-        const filtered = gridData.filter(item => {
-            // Check each field in the fields array
+        const filtered = filteredData.filter(item => {
             return fields.some(field => {
                 const fieldValue = item[field];
                 if (typeof fieldValue === 'string') {
@@ -35,10 +73,30 @@ export function RecipePage() {
         setFilteredData(filtered); // Update filtered data
     }
 
+    const handleFilterType = (itemData) => {
+        if(currentType?.name == itemData.name){
+            setCurrentType(null)
+            setFilteredData(listRecipe)
+            return
+        }
+        setCurrentType(itemData)
+        const data = listRecipe.filter((item) => 
+            item.Category.some(category => category.name == itemData.name)
+        );
+
+        setFilteredData(data)
+    }
+    
+
     useEffect(() => {
-        setGridData(listTest);
-        setFilteredData(listTest);
+        APIGetListRecipe()
+
+
     }, []);
+
+    useEffect(() => {
+ 
+    })
 
     return (
         <div className='recipeContainer'>
@@ -66,6 +124,16 @@ export function RecipePage() {
             </div>
 
             <div className='recipe-category'>
+                {foodTypes.map((item) => (
+                    <div onClick={() => handleFilterType(item)}>
+                        <div className={`image-area ${currentType?.name === item.name ? 'selected' : ''}`}>
+                            <img src={item.image} alt={item.name} />
+                            {currentType?.name === item.name && <div className="overlay">
+                                <FontAwesomeIcon icon={faCheck} /></div>}
+                        </div>
+                        <div className="text-image">{item.name}</div>
+                    </div>
+                ))}
 
             </div>
 

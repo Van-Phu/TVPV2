@@ -20,7 +20,7 @@
     border-radius: 10px;
 }
 
-.block{
+.block{ 
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -103,7 +103,7 @@
 
 .card{
     margin-left: 20px;
-    height: 300px;
+    height: 350px;
     width: 250px;
     box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
     border-radius: 10px;
@@ -112,15 +112,17 @@
 }
 
 .image-card{
-    height: 150px;
+    height: 200px;
     width: 100%;
+    border-radius: 10px;
 }
 
 .image-card img{
     height: 100%;
     width: 100%;
     flex: 1;
-    object-fit: contain;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
 .button-delete-image{
@@ -211,11 +213,78 @@
     height: 550px;
   }
 
-  .dialog-delete{
-    height: 500px;
-    width: 500px;
-    background-color: red;
+  .delete-area{
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
     position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    top: 0;
     z-index: 99;
+  }
+
+  .dialog-delete{
+    height: 200px;
+    width: 400px;
+    background-color: white;
+    border-radius: 10px;
+  }
+
+  .title-dialog-delete{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+
+  .des-dialog-delete{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+  }
+
+  .button-dialog-delete{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .button-dialog-delete .btn{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    margin-top: 62px;
+    height: 50px;
+    color: white;
+    cursor: pointer;
+    /* border-radius: 5px; */
+  }
+
+  .button-dialog-delete .buttonCancel{
+    background-color: rgb(121, 121, 121);
+    border-bottom-left-radius: 5px;
+  }
+
+  .button-dialog-delete .butonDelete{
+    background-color: red;
+    border-bottom-right-radius: 5px;
+  }
+
+  .button-dialog-delete .btn:hover{
+    opacity: 0.7;
+  }
+
+  .chip{
+    background-color: #ff7f00 !important;
+  }
+  
+  .option{
+    background-color: #ff7f00 !important;
+    color: white !important;
   }
 
