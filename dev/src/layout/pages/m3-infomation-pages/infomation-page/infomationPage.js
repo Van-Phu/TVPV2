@@ -5,9 +5,11 @@ import { useSelector } from 'react-redux';
 import { RecipeDTO } from "../../../shared/dto/RecipeDTO ";
 import ReactQuill from "react-quill";
 import { DTORecipeMaster } from '../../../shared/dto/DTORecipe';
+import Multiselect from 'multiselect-react-dropdown';
 
 export function InfomationPage() {
     const [userName, setUserName] = useState('')
+    const [idUser, setIDUser] = useState('')
     const user = useSelector((state) => state.user.userInfo);
     const [value, setValue] = useState("");
     // const [image, setImage] = useState(null);
@@ -16,6 +18,31 @@ export function InfomationPage() {
     const [isShowCreate, setIsShowCreate] = useState(false)
     const [listData, setListData] = useState([])
     const [isCreate, setIsCreate] = useState(false)
+    const [isShowDelete, setIsShowDelete] = useState(false)
+    const [itemDelete, setItemDelete] = useState()
+
+    const foodTypes = [
+        { name: "Món khai vị" },
+        { name: "Món chính" },
+        { name: "Món tráng miệng" },
+        { name: "Món ăn nhẹ" },
+        { name: "Món ăn chay" },
+        { name: "Món nướng" },
+        { name: "Món hấp" },
+        { name: "Món chiên" },
+        { name: "Món luộc" },
+        { name: "Món xào" },
+        { name: "Món canh" },
+        { name: "Món lẩu" },
+        { name: "Món súp" },
+        { name: "Món nước" },
+        { name: "Món chay" }
+      ];
+      
+
+    const [state, setState] = useState({
+        options: foodTypes
+    })
 
 
 
@@ -102,6 +129,7 @@ export function InfomationPage() {
             setIngredients([{ quantity: '', unit: 'gram', description: '', detailedSize: false }])
             setIsShowCreate(true)
         }
+        updateField('Author', idUser)
     }
 
     const APICreateREcipe = async (e) => {
@@ -207,23 +235,57 @@ export function InfomationPage() {
     };
 
     const handleUpdate = (item) => {
-        
-        APIUpdateRecipe(item)
-        // setIngredients(item.ingredients)
+        if(validateRecipe(recipe)){
+            alert(validateRecipe(recipe))
+        }else{
+            APIUpdateRecipe(item)
+        }
     }
 
-    const handleCheckItem = () => {
-
-    }
+    const validateRecipe = (recipe) => {
+        let errorMessage = '';
+      
+        // Kiểm tra các trường bắt buộc và sử dụng else if để xử lý lỗi
+        if (!recipe.Thumbnail) {
+            errorMessage = "Hình ảnh không được để trống.";
+        } else if (!recipe.RecipeName) {
+            errorMessage = "Tên công thức không được để trống.";
+        } else if (!recipe.RecipeDescription) {
+            errorMessage = "Mô tả công thức không được để trống.";
+        } 
+        else if (recipe.Category.length === 0) {
+            errorMessage = "Loại món ăn không được để trống.";
+        }else if (recipe.CookingTime <= 0) {
+            errorMessage = "Thời gian nấu phải lớn hơn 0.";
+        } else if (recipe.servings <= 0) {
+            errorMessage = "Số khẩu phần phải lớn hơn 0.";
+        } else if (recipe.Ingredients.length === 0) {
+            errorMessage = "Danh sách nguyên liệu không được để trống.";
+        }
+        else if (!recipe.template) {
+            errorMessage = "Cần chọn mẫu công thức.";
+        }  if (!recipe.Author) {
+            errorMessage = "Cần có thông tin tác giả.";
+        } 
+      
+        return errorMessage; // Trả về thông báo lỗi đầu tiên nếu có
+      }
+      
 
     
     const handleCreate = () => {
-        APICreateREcipe()
+        if(validateRecipe(recipe)){
+            alert(validateRecipe(recipe))
+        }else{
+            APICreateREcipe()
+        }
+
     }
 
 
     const handleDeleteRecipe = (id) => {
         APIDeleteRecipe(id)
+        handleCloseDelete()
     }
 
     const handleButtonUpdateClick = (item) => {
@@ -239,12 +301,23 @@ export function InfomationPage() {
         updateField('Thumbnail', '')
     }
 
-    useEffect(() => {
-        if (userName) {
+    const handleOpenDelete = (item) => {
+        setItemDelete(item)
+        setIsShowDelete(true)
+    }
 
-        }
+    
+    const handleCloseDelete = () => {
+        setIsShowDelete(false)
+    }
 
-    }, [userName])
+    const handleSelect = (item) => {
+        updateField('Category', item)
+    }
+
+    const handleRemoveType = (item) => {
+        updateField('Category', item)
+    }
 
     // Đọc dữ liệu từ localStorage khi component được tải
     useEffect(() => {
@@ -263,8 +336,8 @@ export function InfomationPage() {
         const u = JSON.parse(localStorage.getItem('User')) 
         if (u) {
             setUserName(u.username)
+            setIDUser(u.id)
             updateField("Author", u.id)
-            console.log(u.id)
             APIGetListRecipe(u.id)
         }
     }, [])
@@ -316,7 +389,7 @@ export function InfomationPage() {
                                     <div className='name-card'>{item.RecipeName}</div>
                                     <div className='description-card'>{item.RecipeDescription}</div>
                                     <div className='button-card'>
-                                        <div onClick={() => handleDeleteRecipe(item._id)} className='btnDeleteCard'>Xóa</div>
+                                        <div onClick={() => handleOpenDelete(item)} className='btnDeleteCard'>Xóa</div>
                                         <div onClick={() => handleButtonUpdateClick(item)} className='btnUpdateCard'>Chỉnh sửa</div>
                                     </div>
                                 </div>
@@ -325,6 +398,23 @@ export function InfomationPage() {
                     </div>  
 
                 </div>
+                {isShowDelete && 
+                               <div className='delete-area'>
+                               <div className='dialog-delete'>
+                                   <div className='title-dialog-delete'>
+                                       Xóa công thức
+                                   </div>
+                                   <div className='des-dialog-delete'>
+                                       Lưu ý: Công thức bị xóa sẽ  không thể khôi phục lại
+                                   </div>
+                                   <div className='button-dialog-delete'>
+                                       <div onClick={() => handleCloseDelete()} className='btn buttonCancel'>HỦY</div>
+                                       <div onClick={() => handleDeleteRecipe(itemDelete._id)} className='btn butonDelete'>XÓA</div>
+                                   </div>
+                               </div>
+                           </div>
+                } 
+     
                 {isShowCreate && <div className="block-main block-3">
                     <div className="container-manage-recipe">
                         <div className="content">
@@ -361,6 +451,18 @@ export function InfomationPage() {
                                 <div className="area">
                                     <div className="title-area">Mô tả <span className="important">(*)</span></div>
                                     <input value={recipe?.RecipeDescription} onChange={(value) => updateField('RecipeDescription', value.target.value)} className="input" />
+                                </div>
+                                <div className="area">
+                                    <div className="title-area">Loại món ăn <span className="important">(*)</span></div>
+                                    <Multiselect
+                                        value={recipe.Category}
+                                        options={state.options} 
+                                        selectedValues={recipe.Category}
+                                        onSelect={(e) => handleSelect(e)}
+                                        onRemove={(e) => handleRemoveType(e)}
+                                        displayValue="name"
+                                        placeholder='Chọn'
+                                    />
                                 </div>
                                 <div className="area">
                                     <div className="title-area">Thời gian chế biến <span className="important">(*)</span></div>
@@ -445,9 +547,7 @@ export function InfomationPage() {
                     </div>
                 </div>}
 
-                <div className='dialog-delete'>
-
-                </div>
+             
 
 
             </div>
