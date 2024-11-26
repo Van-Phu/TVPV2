@@ -174,3 +174,12 @@
 
   }
 
+  .ql-container{
+    max-height: 650px;
+    overflow: hidden;
+  }
+
+  .ql-toolbar.ql-snow + .ql-container.ql-snow {
+    height: 550px;
+  }
+

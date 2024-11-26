@@ -19,10 +19,10 @@ export function InfomationPage() {
 
 
     useEffect(() => {
-        const u = localStorage.getItem('User')
+        const u = JSON.parse(localStorage.getItem('User')) 
         if (u) {
-            setUserName(u)
-            updateField("Author", u)
+            setUserName(u.username)
+            updateField("Author", u.id)
         }
     }, [])
 
@@ -101,10 +101,6 @@ export function InfomationPage() {
     };
 
 
-    const btnSaveClick = () => {
-        APICreateREcipe()
-    }
-
     const handleChangeCreate = () => {
         setIsCreate(true)
         if (isShowCreate) {
@@ -139,9 +135,34 @@ export function InfomationPage() {
         }
     };
 
+    const APIUpdateRecipe = async (item) => {
+        try {
+            const response = await fetch('http://localhost:5000/api/recipes/updateRecipe/' + recipe._id, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(recipe),
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                alert('Cập nhật công thức thành công!')
+                APIGetListRecipe(userName)
+            } else {
+                alert(`Lỗi: ${data.message}`);
+            }
+            handleChangeCreate()
+        } catch (error) {
+            console.error('Lỗi kết nối:', error);
+            alert('Lỗi hệ thống!');
+        }
+    };
+
     const APIGetListRecipe = async (user) => {
         try {
-            const response = await fetch('http://localhost:5000/api/recipes/getRecipesByAuthor/' + user, {
+            const response = await fetch('http://localhost:5000/api/recipes/getRecipesByAuthor/admin', {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -154,9 +175,6 @@ export function InfomationPage() {
             if (response.ok) {
                 setListData(data)
             } 
-            // else {
-            //     alert(`Lỗi: ${data.message}`);
-            // }
         } catch (error) {
             console.error('Lỗi kết nối:', error);
             alert('Lỗi hệ thống!');
@@ -194,9 +212,16 @@ export function InfomationPage() {
         updateField("Thumbnail", e.target.value)
     };
 
-    const handleUpdate = () => {
+    const handleUpdate = (item) => {
+        APIUpdateRecipe(item)
+        setIngredients(item.ingredients)
+    }
+
+    
+    const handleCreate = () => {
         APICreateREcipe()
     }
+
 
     const handleDeleteRecipe = (id) => {
         APIDeleteRecipe(id)
@@ -204,6 +229,7 @@ export function InfomationPage() {
 
     const handleButtonUpdateClick = (item) => {
         setRecipe(item)
+        console.log(item)
         setIsShowCreate(true)
         setIsCreate(false)
         
@@ -235,7 +261,7 @@ export function InfomationPage() {
                     <div className="block">
                         <div className="col-item-1">
                             <div className='avatarProfile'>
-                                <img className='avatarA' src='https://static-00.iconduck.com/assets.00/avatar-default-icon-2048x2048-h6w375ur.png' />
+                                <img className='avatarA' src='https://t4.ftcdn.net/jpg/05/49/98/39/360_F_549983970_bRCkYfk0P6PP5fKbMhZMIb07mCJ6esXL.jpg' />
                             </div>
                             <div className='info'>
                                 <div className='name'>
@@ -306,19 +332,19 @@ export function InfomationPage() {
 
                                 <div className="area">
                                     <div className="title-area">Tiêu đề <span className="important">(*)</span></div>
-                                    <input onBlur={(value) => updateField('RecipeName', value.target.value)} className="input" />
+                                    <input value={recipe?.RecipeName} onChange={(value) => updateField('RecipeName', value.target.value)} className="input" />
                                 </div>
                                 <div className="area">
                                     <div className="title-area">Mô tả <span className="important">(*)</span></div>
-                                    <input onBlur={(value) => updateField('RecipeDescription', value.target.value)} className="input" />
+                                    <input value={recipe?.RecipeDescription} onChange={(value) => updateField('RecipeDescription', value.target.value)} className="input" />
                                 </div>
                                 <div className="area">
                                     <div className="title-area">Thời gian chế biến <span className="important">(*)</span></div>
-                                    <input type="number" onBlur={(value) => updateField('CookingTime', value.target.value)} className="input" />
+                                    <input value={recipe.CookingTime} type="number" onChange={(value) => updateField('CookingTime', value.target.value)} className="input" />
                                 </div>
                                 <div className="area">
                                     <div className="title-area">Số lượng người ăn <span className="important">(*)</span></div>
-                                    <input type="number" onBlur={(value) => updateField('servings', value.target.value)} className="input" />
+                                    <input value={recipe.servings} type="number" onChange={(value) => updateField('servings', value.target.value)} className="input" />
                                 </div>
 
                                 <div className="area">
@@ -375,6 +401,7 @@ export function InfomationPage() {
                                 <div className="ql-container">
                                     <div className="title-area">Template <span className="important">(*)</span></div>
                                     <ReactQuill
+                                        value={recipe.template}
                                         className="box-content"
                                         // value={value}
                                         onChange={(value) => updateField('template', value)}
@@ -385,8 +412,8 @@ export function InfomationPage() {
                                 </div>
                                 <div className="btnArea">
                                     <div onClick={() => handleChangeCreate()} div style={{ backgroundColor: 'red' }} className="btnSave">Đóng</div>
-                                     {!isCreate && <div onClick={() => btnSaveClick()} className="btnSave">Hoàn tất chỉnh sửa</div>}
-                                    {isCreate && <div onClick={() => btnSaveClick()} className="btnSave">Đăng công thức</div>} 
+                                     {!isCreate && <div onClick={() => handleUpdate()} className="btnSave">Cập nhật công thức</div>}
+                                    {isCreate && <div onClick={() => handleCreate()} className="btnSave">Đăng công thức</div>} 
                                 </div>
                             </div>
                         </div>
