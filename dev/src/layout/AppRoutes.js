@@ -7,6 +7,7 @@ import { InfomationPage } from './pages/m3-infomation-pages/infomation-page/info
 import FullFunctionEditor from './pages/m3-infomation-pages/manage-recipe-page/manageRecipePage';
 import { LoginScreen } from './pages/m0-login-pages/loginpage';
 import PrivateRoute from './PrivateRoute'; // Import PrivateRoute
+import { RecipeDetail } from './pages/m4-recipe-detail-pages/recipedetailpage';
 
 const AppRoutes = () => {
   return (
@@ -35,6 +36,14 @@ const AppRoutes = () => {
         element={
           <PrivateRoute>
             <FullFunctionEditor />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/detail"
+        element={
+          <PrivateRoute>
+            <RecipeDetail />
           </PrivateRoute>
         }
       />
