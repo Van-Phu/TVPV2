@@ -44,9 +44,11 @@ export function RecipePage({typeData}) {
     };
 
     const APIGetListSavedRecipe = async () => {
+         const user1 = await JSON.parse(localStorage.getItem('User'));
+         console.log(user1)
         try {
-            const user = localStorage.getItem('User');
-            const response = await fetch('http://localhost:5000/api/recipes/getSavedRecipes/' + user.id, {
+            
+            const response = await fetch('http://localhost:5000/api/recipes/getSavedRecipes/' + user1.id, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',

@@ -46,7 +46,7 @@ export function RecipeList({data}) {
                     <div className="information-block">
                         <span className="recipe-title" title={item.RecipeName} onClick={() => handleItemClick(item)}>{item.RecipeName}</span>
                         <span className="recipe-description" title={item.RecipeDescription}>{item.RecipeDescription}</span>
-                        <span className="recipe-author" title={item.Author.username}>Người đăng: {item.Author.username}</span>
+                        <span className="recipe-author" title={item.Author?.username}>Người đăng: {item.Author?.username}</span>
                         <div className="save-block">
                             <span className="num-of-saved">{item.NumOfSaved} người đã lưu</span>
                             <span className={`save-icon ${item.IsSaved ? 'isSaved' : ''}`} onClick={() => handleSaveClick(item)}><FontAwesomeIcon icon={item.IsSaved ? solidBookmark : regularBookmark} /></span>
