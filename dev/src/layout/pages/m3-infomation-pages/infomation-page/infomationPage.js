@@ -21,6 +21,8 @@ export function InfomationPage() {
     const [isShowDelete, setIsShowDelete] = useState(false)
     const [itemDelete, setItemDelete] = useState()
 
+    const userRealtime = useSelector((state) => state.user.userInfo)
+
     const foodTypes = [
         { name: "Món khai vị" },
         { name: "Món chính" },
@@ -176,8 +178,9 @@ export function InfomationPage() {
     };
 
     const APIGetListRecipe = async (user) => {
+        console.log(user)
         try {
-            const response = await fetch('http://localhost:5000/api/recipes/getRecipesByAuthor/admin', {
+            const response = await fetch('http://localhost:5000/api/recipes/getRecipesByAuthor/' + user, {
                 method: 'GET',
                 headers: {
                     'Content-Type': 'application/json',
@@ -314,6 +317,7 @@ export function InfomationPage() {
 
     // Đọc dữ liệu từ localStorage khi component được tải
     useEffect(() => {
+        console.log(userRealtime)
         const savedValue = localStorage.getItem("editorContent");
         if (savedValue) {
             setValue(savedValue);
@@ -331,7 +335,7 @@ export function InfomationPage() {
             setUserName(u.username)
             setIDUser(u.id)
             updateField("Author", u.id)
-            APIGetListRecipe(u.id)
+            APIGetListRecipe(u.username)
         }
     }, [])
 

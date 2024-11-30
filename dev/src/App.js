@@ -12,7 +12,7 @@ function App() {
   const [user, setUser] = useState()
   const dispatch = useDispatch()
   const isLoggedIn = useSelector((state) => state.user.isLoggedIn);
-
+  const userRealtime = useSelector((state) => state.user.userInfo)
 
   useEffect(() => {
     const handleGetCache = async() => {

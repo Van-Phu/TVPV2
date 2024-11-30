@@ -75,11 +75,12 @@ export function RecipePage({typeData}) {
         if(normalizedValue){
             data = listRecipe.filter(item => {
                 return ['RecipeName', 'Author'].some(field => {
-                    const fieldValue = item[field];
-                    if (typeof fieldValue === 'string') {
-                        const normalizedFieldValue = fieldValue.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-                        return normalizedFieldValue.includes(normalizedValue);
-                    }
+                const fieldValue = item[field];
+                if (typeof fieldValue === 'string') {
+                    // Compare field value to search input (case-insensitive)
+                    const normalizedFieldValue = fieldValue.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+                    return normalizedFieldValue.includes(normalizedValue);
+                }
                     return false;
                 });
             });
@@ -91,17 +92,24 @@ export function RecipePage({typeData}) {
                 item.Category.some(category => category.name == currentType.name)
             );
         }
-
+        
         // console.log('yes')
         setFilteredData(data)
     }
 
     const handleFilterType = (itemData) => {
+        setSearchValue('')
         if(currentType?.name == itemData.name){
             setCurrentType(null)
+            setFilteredData(listRecipe)
             return
         }
         setCurrentType(itemData)
+        const data = listRecipe.filter((item) => 
+            item.Category.some(category => category.name == itemData.name)
+        );
+
+        setFilteredData(data)
     }
 
     useEffect(() =>{
@@ -111,7 +119,7 @@ export function RecipePage({typeData}) {
 
     useEffect(() => {
         if(typeData == null)
-            APIGetListRecipe()
+        APIGetListRecipe()
         else
             APIGetListSavedRecipe()
     }, [typeData]);
